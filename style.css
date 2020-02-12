@@ -1,21 +1,20 @@
 :root{
-    background-color: cornsilk;
+    background-color: white;
     /* default font size in most browsers are 16px, 62.5% of 16 is 10px */
     font-size: 62.5%;
 }
 
 *{
     box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: 'Lato', sans-serif;
     margin: 0;
     padding: 0;
-    color: black;
+    color: #FFCC00;
 }
 
 h1,
-h2,
-h3,
-h4 {
+h2
+ {
     margin-bottom: 1rem;
 }
 
@@ -25,20 +24,14 @@ h1{
     margin-bottom: 5rem;
 }
 
-h1 > span {
-    font-size :2.4rem;
-    margin-bottom: 500;
-}
-
 h2 {
     font-size :4rem;
     margin-bottom: 5rem;
     font-weight: 700;
 }
 
-h3 {
-    font-size :2.8rem;
-    font-weight: 500;
+.image-top{
+  width: 20rem;
 }
 
 .container {
@@ -75,10 +68,7 @@ h3 {
     text-align: center;
   }
   
-  .hidden {
-    display: none;
-  }
-  
+
   /* BUTTONS */
 .btn {
     font-size: 1.8rem;
@@ -87,7 +77,6 @@ h3 {
     text-align: center;
     border: 0.1rem solid #56a5eb;
     margin-bottom: 1rem;
-    /*takes down default decoration like underlining links*/
     text-decoration: none;
     color: #56a5eb;
     background-color: white;

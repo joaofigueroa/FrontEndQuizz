@@ -24,4 +24,61 @@
 
 .choiceText{
     padding: 1.5rem;
+    width: 100%;
 }
+
+.correct{
+    background-color:#28a745;
+}
+
+.incorrect{
+    background-color:#dc3545;
+}
+
+#hud{
+    display: flex;
+    /* space-between takes all the space availble to split things up */
+    justify-content: space-between;    
+}
+
+.hud-prefix{
+    text-align: center;
+    font-size: 3rem;
+    font-family: 'Ubuntu', sans-serif; 
+}
+
+.hud-main-text{
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    
+}
+
+#CountDown {
+    margin-top: 2.5rem;
+    width: 100%;
+    /* display: flex; */
+    border: 0.2rem solid rgb(86, 165, 235,0.25);
+    justify-content: right;
+    background-color: ivory;
+  }
+  #CountDown:hover {    
+    box-shadow: 0 0.4rem 1.4rem 0 rgba(86, 185, 235, 0.5);
+    transform: translateY(-0.01rem);
+    /* it allows the transform0 to move smoothly */
+    transition: transform 150ms;
+  }
+  
+  #Bar {
+    width: 10%;
+    height: 30px;    
+    line-height: 30px; 
+    background-color:teal;
+  }
+
+  #seconds{
+    text-align: center;
+    /* color: white; */
+    font-family: 'Lato', sans-serif;
+    font-size: 2.5rem; 
+  }
+  
