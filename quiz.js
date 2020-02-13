@@ -1,18 +1,18 @@
 const question = document.getElementById('question');
+//this is pretty cool hehe 
 const choices =  Array.from(document.getElementsByClassName('choiceText'));
-
 const questionCounterText = document.getElementById('QuestionCounter');
 const scoreText = document.getElementById('Score');
-
-
 
 let currentQuestion  = [];
 let score  = 0;
 let questionCount = 0;
 let availebleQuestions = [];
 
-let bar =  [];
-let id = [];
+
+let timeInterval = null;
+let bar = document.getElementById("Bar");
+let seconds = document.getElementById("seconds");
 
 
 
@@ -45,24 +45,22 @@ let questions = [
     }
   ];
 
-const points = 1;
+
 
 const maxQuestions =3;
 
 //arrow syntax - Ferrero syntax ASX 
-startquiz = () =>{
+startQuiz = () =>{
     questionCount = 0;
     score = 0;
     // the three dots allows to get a full copy of the array questions. if we just assign, changing one will affect the other
-    availebleQuestions = [...questions];
-    //console.log(availebleQuestions);
-  
+    availebleQuestions = [...questions];    
     getNewQuestion();
 }
 
 getNewQuestion = () =>{
 
-    move(questionCount);
+    startTimeBar(questionCount);
 
     if(availebleQuestions.length === 0 || questionCount >= maxQuestions){      
       //scoreFinal.innerText = score;
@@ -70,6 +68,7 @@ getNewQuestion = () =>{
       localStorage.setItem("score",score);
       return window.location.assign('/scorePage.html');    
     }
+
     questionCount++;
     questionCounterText.innerText = questionCount + "/" + maxQuestions;
     scoreText.innerText = score;
@@ -79,9 +78,11 @@ getNewQuestion = () =>{
     currentQuestion = availebleQuestions[questionIndex];
     question.innerText = currentQuestion.question;
 
+    //gets the number of the choice so it can set the choice in the right place
     choices.forEach( choice => {
         var questionNumber = choice.dataset['number'];
-        choice.innerText = currentQuestion['choice' + questionNumber];
+        choice.innerText = currentQuestion['choice' + questionNumber];      
+        addAnimationOfButtons();
     });
 
     //splice removes elements from array, so used question is not used again
@@ -91,61 +92,75 @@ getNewQuestion = () =>{
 choices.forEach( choice => {
     choice.addEventListener("click",e  =>{
         
-     
+       removeAnimationOfButtons();
         var choiceSelected = e.target;
         var chosenAnswer = choiceSelected.dataset["number"];
         var rightOrWrong = chosenAnswer == currentQuestion.answer ? 'correct' : 'incorrect';
         score = chosenAnswer == currentQuestion.answer ? score+=10 : score;
-        console.log(rightOrWrong);
         //the line bellow allows javascript to add a class to an element
         choiceSelected.parentElement.classList.add(rightOrWrong);
+       
         setTimeout ( ()=>   {
           choiceSelected.parentElement.classList.remove(rightOrWrong);
           getNewQuestion();                   
-        },500);
+        },1000);
     });
 });
 
 
 
-move = (questionCount) => {
+startTimeBar = (questionCount) => {
 
-  var i =0;
-  if (i == 0) {
-    i = 1;
+    width = 100;
 
-    bar[questionCount] = document.getElementById("Bar");
-    var seconds = document.getElementById("seconds");
-    var width = 100;
-
+    if(timeInterval != null) clearInterval(timeInterval);
     
-    id[questionCount] = setInterval(frame, 100);
+    timeInterval = setInterval(() => {  
 
-    function frame() {      
-      if (width < 0) {
-        clearInterval(id[questionCount]);
-        i = 0;
-        getNewQuestion();                   
+      if (isTimeBarFinished(width)) {          
+        removeAnimationOfButtons();        
+        clearInterval(timeInterval);  
+        setTimeout ( ()=>   {             
+        getNewQuestion(); 
+        },300);                   
       }
-    
       else {
-
-        //clears the interval of the last question
-        if(questionCount>0){
-          clearInterval(id[questionCount-1]);          
-        } 
-
-        width--;
-        bar[questionCount].style.width = width + "%";
-        seconds.innerHTML = Math.ceil(width/10)+' segundos';
-        localStorage.setItem('timer',Math.ceil(width/10));                
+        updateTimeBarStatus();
       }
-    }
-
-  }
+    }, 100);
 }
 
 
+removeAnimationOfButtons = () =>{
+    console.log("here");
+    choices.forEach( choice => {
+      var questionNumber = choice.dataset['number'];
+      choice.parentElement.classList.remove('choiceContainer'+questionNumber);
+  });
 
+} 
 
-startquiz();
+addAnimationOfButtons = () =>{  
+  choices.forEach( choice => {
+    var questionNumber = choice.dataset['number'];
+    choice.parentElement.classList.add('choiceContainer'+questionNumber);
+});
+
+} 
+
+isTimeBarFinished= (width) => {
+  //console.log("width",width);
+  if(width <= 0){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+updateTimeBarStatus = () =>{  
+        width--;
+        bar.style.width = width + "%";
+        seconds.innerHTML = Math.ceil(width/10)+' segundos';       
+}
+
+startQuiz();
